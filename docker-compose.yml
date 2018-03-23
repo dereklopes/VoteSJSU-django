@@ -1,0 +1,22 @@
+version: '3.4'
+services:
+  django:
+    build: .
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - ./src:/usr/src/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - mysql
+    container_name: VoteSJSU-django
+  mysql:
+    image: mysql:latest
+    volumes:
+      - mysql-data:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=123
+    container_name: VoteSJSU-mysql
+
+volumes:
+  mysql-data:
