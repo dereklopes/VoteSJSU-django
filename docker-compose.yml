@@ -8,15 +8,17 @@ services:
     ports:
       - "8000:8000"
     depends_on:
-      - mysql
+      - postgres
     container_name: VoteSJSU-django
-  mysql:
-    image: mysql:latest
+  postgres:
+    image: postgres:latest
     volumes:
-      - mysql-data:/var/lib/mysql
+      - db-data:/var/lib/mysql
     environment:
-      - MYSQL_ROOT_PASSWORD=123
-    container_name: VoteSJSU-mysql
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=123
+    container_name: VoteSJSU-postgres
 
 volumes:
-  mysql-data:
+  db-data:
