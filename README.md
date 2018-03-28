@@ -19,6 +19,9 @@ If you need to execute a command within docker, do the following:
 docker exec -ti <container-id> <command>
 # for example, if I want a bash prompt in the django container
 docker exec -ti VoteSJSU-django bash
-# or a mysql prompt in the mysql container
-docker exec -ti VoteSJSU-mysql mysql -u root -p123
+# or to run test
+docker exec -ti VoteSJSU-django ./manage.py test
+# or to make migrations and migrate
+docker exec -ti VoteSJSU-django ./manage.py makemigrations
+docker exec -ti VoteSJSU-django ./manage.py migrate
 ```
