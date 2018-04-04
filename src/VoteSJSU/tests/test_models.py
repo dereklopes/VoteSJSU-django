@@ -2,7 +2,7 @@ from django.test import TestCase
 from VoteSJSU.models import *
 
 
-class ModuleTestCase(TestCase):
+class ModelTestCase(TestCase):
     def test_post_model(self):
         # Set up test data
         title = 'Tests Post'
