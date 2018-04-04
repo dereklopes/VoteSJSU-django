@@ -13,7 +13,17 @@ class Post(models.Model):
         ('poll', 'Poll'),
         ('rating', 'Rating'),
     )
+    post_id = models.AutoField(primary_key=True)
     title = models.CharField(max_length=180)
-    author = models.ForeignKey(Account, on_delete=models.DO_NOTHING)
-    post_type = models.CharField(max_length=16, choices=post_types, blank=False, default='poll')
-    url = models.URLField()
+    author = models.ForeignKey(Account, on_delete=models.DO_NOTHING, null=True)
+    post_type = models.CharField(max_length=16, choices=post_types, null=True, default='poll')
+    url = models.URLField(blank=True)
+    choice1 = models.CharField(max_length=90, null=True)
+    choice2 = models.CharField(max_length=90, null=True)
+    choice3 = models.CharField(max_length=90, null=True)
+    choice4 = models.CharField(max_length=90, null=True)
+    rating = models.DecimalField(decimal_places=2, max_digits=3, default=0)
+    post_date = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ('post_date',)
