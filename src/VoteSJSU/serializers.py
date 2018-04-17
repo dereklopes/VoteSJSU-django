@@ -12,3 +12,8 @@ class AccountSerializer(serializers.ModelSerializer):
     class Meta:
         model = Account
         fields = '__all__'
+
+class CommentSerializer(serializers.ModelComments):
+    class Meta:
+        model = Comments
+        fields = '__all__'
