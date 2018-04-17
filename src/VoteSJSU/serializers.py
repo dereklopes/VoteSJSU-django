@@ -15,5 +15,5 @@ class AccountSerializer(serializers.ModelSerializer):
 
 class CommentSerializer(serializers.ModelComments):
     class Meta:
-        model = Comments
+        model = Comment
         fields = '__all__'
