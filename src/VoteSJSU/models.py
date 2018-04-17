@@ -40,8 +40,3 @@ class Comment(models.Model):
     content = models.CharField(max_length=512, null=True)
 
     date = models.DateTimeField(auto_now=True)
-    up_voted = models.ForeignKey(Account, on_delete=models.DO_NOTHING,
-                                 null=True, related_name='up_voted')
-    down_voted = models.ForeignKey(Account, on_delete=models.DO_NOTHING,
-                                   null=True, related_name='down_voted')
-    rating = models.DecimalField(decimal_places=2, max_digits=3, default=0)
