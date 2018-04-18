@@ -52,10 +52,11 @@ class ModelTestCase(TestCase):
 
         content = "test comment"
         comment = Comment(author=account, post=post, content=content)
+        comment.save()
 
         self.assertEqual(1, Comment.objects.filter(author__exact=account).count())
         self.assertEqual(1, Comment.objects.filter(post__exact=post).count())
-        self.assertEqual(1, Comment.objects.filter(comment__exact=comment).count())
+        self.assertEqual(1, Comment.objects.filter(content__exact=content).count())
 
         # Clean up
         comment.delete()
