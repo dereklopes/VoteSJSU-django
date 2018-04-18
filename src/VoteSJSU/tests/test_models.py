@@ -34,3 +34,31 @@ class ModelTestCase(TestCase):
         self.assertEqual(1, len(Account.objects.filter(name__exact=name)))
         # Clean up
         account.delete()
+
+    def test_comment_model(self):
+        # Set up test data
+        email = 'test@tests.com'
+        name = 'John Doe'
+        # Create and save the account model
+        account = Account(email=email, name=name)
+        account.save()
+
+        title = 'Tests Post'
+        post_type = 'poll'
+        url = 'test.com'
+        # Create and save the post model
+        post = Post(title=title, author=account, post_type=post_type, url=url)
+        post.save()
+
+        content = "test comment"
+        comment = Comment(author=account, post=post, content=content)
+
+        self.assertEqual(1, Comment.objects.filter(author__exact=account).count())
+        self.assertEqual(1, Comment.objects.filter(post__exact=post).count())
+        self.assertEqual(1, Comment.objects.filter(comment__exact=comment).count())
+
+        # Clean up
+        comment.delete()
+        post.delete()
+        account.delete()
+
