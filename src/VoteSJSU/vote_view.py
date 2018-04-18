@@ -48,7 +48,7 @@ class VoteView(APIView):
         serializer.save()
 
         # Find the corresponding post and update
-        if self.update_post_rating_votes(post_id=post_id, choice=choice, amount=1):
+        if self.update_post_rating_votes(post_id=post_id, choice=choice):
             return HttpResponse(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
         return JsonResponse(data=serializer.data, status=status.HTTP_201_CREATED, safe=False)
@@ -62,20 +62,20 @@ class VoteView(APIView):
         vote.delete()
 
         # Update Post object
-        if self.update_post_rating_votes(post_id=vote.post_id, choice=vote.choice, amount=-1):
+        if self.update_post_rating_votes(post_id=vote.post_id, choice=vote.choice):
             return HttpResponse(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
         return HttpResponse(status=status.HTTP_204_NO_CONTENT)
 
     @classmethod
-    def update_post_rating_votes(cls, post_id: int, choice: int, amount: int):
+    def update_post_rating_votes(cls, post_id: int, choice: int):
         try:
             post = Post.objects.get(post_id__exact=post_id)
         except Post.DoesNotExist:
             return -1
         # Update Post object
         if post.post_type == 'rating':
-            post.num_ratings += amount
+            post.num_ratings = len(Vote.objects.filter(post_id__exact=post_id))
             post.rating = post.rating + choice / post.num_ratings
         elif post.post_type == 'poll':
             post.choice1_votes = len(Vote.objects.filter(post_id__exact=post_id, choice__exact=1))
