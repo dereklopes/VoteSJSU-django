@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from VoteSJSU.models import Post, Account
+from VoteSJSU.models import Account, Comment, Post
 
 
 class PostSerializer(serializers.ModelSerializer):
