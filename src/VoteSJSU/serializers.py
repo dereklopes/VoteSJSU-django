@@ -13,7 +13,7 @@ class AccountSerializer(serializers.ModelSerializer):
         model = Account
         fields = '__all__'
 
-class CommentSerializer(serializers.ModelComment):
+class CommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
         fields = '__all__'
