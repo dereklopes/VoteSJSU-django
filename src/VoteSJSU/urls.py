@@ -16,8 +16,10 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from VoteSJSU.post_view import PostView
+from VoteSJSU.vote_view import VoteView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('post/', PostView.as_view())
+    path('post/', PostView.as_view()),
+    path('post/vote/', VoteView.as_view()),
 ]
