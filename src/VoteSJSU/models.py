@@ -27,3 +27,16 @@ class Post(models.Model):
 
     class Meta:
         ordering = ('post_date',)
+
+
+class Comment(models.Model):
+    """Capture the comments of a given post"""
+
+    comment_id = models.AutoField(primary_key=True)
+    author = models.ForeignKey(Account, on_delete=models.DO_NOTHING, null=True,
+                               related_name='comment_author')
+    post = models.ForeignKey(Post, blank=False, on_delete="CASCADE")
+
+    content = models.CharField(max_length=512, null=True)
+
+    date = models.DateTimeField(auto_now=True)
