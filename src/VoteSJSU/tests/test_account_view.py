@@ -62,3 +62,17 @@ class AccountTestCase(TestCase):
         )
         self.assertRaises(Account.DoesNotExist, Account.objects.get, email__exact=self.email)
 
+    def test_change_name(self):
+        new_name = 'Jane Test'
+        Account.objects.create(email=self.email, name=self.name)
+
+        client = APIClient()
+        post_response = client.post(
+            '/account/',
+            {'email': self.email, 'name': new_name, 'token': self.token, 'userId': 'test'},
+            format='json'
+        )
+        self.assertEqual(post_response.status_code, status.HTTP_200_OK)
+        get_response = client.get('/account/?email=' + self.email)
+        response_json = json.JSONDecoder().decode(get_response.content.decode())[0]
+        self.assertEqual(response_json['name'], new_name, 'Name was not changed correctly!')

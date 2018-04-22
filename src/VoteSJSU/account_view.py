@@ -11,6 +11,7 @@ class AccountView(APIView):
         token = self.request.data.get('token', None)
         user_id = self.request.data.get('userId', None)
         email = self.request.data.get('email', None)
+        name = self.request.data.get('name', None)
 
         if not self.verify_sjsu_email(email):
             return HttpResponse('Not an SJSU email', status=status.HTTP_400_BAD_REQUEST)
@@ -18,7 +19,11 @@ class AccountView(APIView):
         account = None
         try:
             # attempt to get the account object
-            Account.objects.get(email__exact=email)
+            account = Account.objects.get(email__exact=email)
+            # Update name if it has changed
+            if name and account.name != name:
+                account.name = name
+                account.save()
         except Account.DoesNotExist:
             # account doesn't exist, create a new one
             print('Creating account')
