@@ -8,9 +8,9 @@ from VoteSJSU.serializers import AccountSerializer
 
 class AccountView(APIView):
     def post(self, request, *args, **kwargs):
-        token = self.request.data['token']
-        user_id = self.request.data['userId']
-        email = self.request.data['email']
+        token = self.request.data.get('token', None)
+        user_id = self.request.data.get('userId', None)
+        email = self.request.data.get('email', None)
 
         if not self.verify_sjsu_email(email):
             return HttpResponse('Not an SJSU email', status=status.HTTP_400_BAD_REQUEST)
@@ -21,7 +21,7 @@ class AccountView(APIView):
             Account.objects.get(email__exact=email)
         except Account.DoesNotExist:
             # account doesn't exist, create a new one
-
+            print('Creating account')
             account = AccountSerializer(data=self.request.data)
             if account.is_valid():
                 account.save()
@@ -38,14 +38,26 @@ class AccountView(APIView):
                 return JsonResponse(data=idinfo, status=status.HTTP_200_OK)
             except crypt.AppIdentityError:
                 return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
-        return HttpResponse(status.HTTP_400_BAD_REQUEST)
+        return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
 
     def get(self, request, *args, **kwargs):
         account_queryset = Account.objects.filter(email__exact=self.request.query_params.get('email'))
         serializer = AccountSerializer(account_queryset, many=True)
         return JsonResponse(data=serializer.data, status=status.HTTP_200_OK, safe=False)
 
-    def verify_sjsu_email(self, email: str):
+    def delete(self, request, *args, **kwargs):
+        email = self.request.query_params.get('email')
+        if not email:
+            return HttpResponse('Missing email parameter', status=status.HTTP_400_BAD_REQUEST)
+        try:
+            account = Account.objects.get(email__exact=email)
+            account.delete()
+            return HttpResponse(status=status.HTTP_204_NO_CONTENT)
+        except Account.DoesNotExist:
+            return HttpResponse('Account does not exist', status=status.HTTP_404_NOT_FOUND)
+
+    @staticmethod
+    def verify_sjsu_email(email: str):
         """
         Verify an email is an SJSU email
         :param email: the email to verify

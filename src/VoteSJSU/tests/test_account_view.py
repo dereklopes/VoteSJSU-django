@@ -50,3 +50,15 @@ class AccountTestCase(TestCase):
         self.assertEqual(response_json['email'], self.email, 'Email retrieved is not correct')
         self.assertIsNotNone(response_json['points'], 'Account points not returned by GET')
         account.delete()
+
+    def test_delete_account(self):
+        Account.objects.create(email=self.email, name=self.name)
+        client = APIClient()
+        delete_response = client.delete('/account/?email=' + self.email)
+        self.assertEqual(
+            delete_response.status_code,
+            status.HTTP_204_NO_CONTENT,
+            'Got bad return code from /account/ DELETE'
+        )
+        self.assertRaises(Account.DoesNotExist, Account.objects.get, email__exact=self.email)
+
