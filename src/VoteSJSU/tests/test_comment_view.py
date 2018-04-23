@@ -37,23 +37,10 @@ class CommentTestCase(TestCase):
         post_content = json.JSONDecoder().decode(post_response.content.decode())
 
         # GET Comment
-        get_response = client.get('/post/content/?comment_id=' + str(post_content['comment_id']))
+        get_response = client.get('/post/comment/?comment_id=' + str(post_content['comment_id']))
         self.assertEqual(get_response.status_code, status.HTTP_200_OK, 'Failed to retrieve new comment')
         get_content = json.JSONDecoder().decode(get_response.content.decode())[0]
         self.assertEqual(get_content['post'], self.test_post.post_id, 'Response data did not match posted data')
-
-        # POST (again for duplicate)
-        post_response = client.post(
-            '/post/comment/',
-            {
-                'post': self.test_post.post_id,
-                'author': self.test_author_email,
-                'choice': 'test comment',
-            },
-            format='json'
-        )
-        self.assertNotEqual(post_response.status_code, status.HTTP_201_CREATED, 'Posted duplicate comment')
-        self.assertEqual(post_response.status_code, status.HTTP_409_CONFLICT, 'Did not get conflict return code')
 
         # DELETE
         delete_response = client.delete('/post/comment/?id=' + str(post_content['comment_id']))
