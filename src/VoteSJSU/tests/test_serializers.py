@@ -9,6 +9,7 @@ class SerializerTestCase(TestCase):
     author_name = 'test'
     author = None
     post = None
+    comment = None
     comment_content = "test comment"
 
     @classmethod
@@ -33,8 +34,9 @@ class SerializerTestCase(TestCase):
     def test_comment_serializer(self):
         serializer = CommentSerializer(self.comment)
         self.assertEqual(self.author_email, serializer.data.get('author'))
-        self.assertEqual(self.post_title, serializer.data.get('title'))
         self.assertEqual(self.comment_content, serializer.data.get('content'))
+        self.assertEqual(self.author_email, serializer.data.get('author'))
+        self.assertEqual(self.post.post_id, serializer.data.get('post'))
 
     @classmethod
     def tearDownClass(cls):
