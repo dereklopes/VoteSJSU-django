@@ -39,13 +39,13 @@ class Post(models.Model):
     class Meta:
         ordering = ('post_date',)
 
-        
+
 class Vote(models.Model):
     vote_id = models.AutoField(primary_key=True)
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
     author = models.ForeignKey(Account, on_delete=models.CASCADE)
     choice = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)])
-    
+
 
 class Comment(models.Model):
     """Capture the comments of a given post"""
@@ -55,3 +55,4 @@ class Comment(models.Model):
     post = models.ForeignKey(Post, blank=False, on_delete="CASCADE")
     content = models.CharField(max_length=512, null=True)
     date = models.DateTimeField(auto_now=True)
+
