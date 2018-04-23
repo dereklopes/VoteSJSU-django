@@ -1,6 +1,5 @@
 from rest_framework import serializers
-from VoteSJSU.models import Post, Account, Vote
-
+from VoteSJSU.models import Account, Comment, Post, Vote
 
 class PostSerializer(serializers.ModelSerializer):
     class Meta:
@@ -19,8 +18,8 @@ class VoteSerializer(serializers.ModelSerializer):
         model = Vote
         fields = '__all__'
 
-        
-class CommentSerializer(serializers.ModelComments):
+
+class CommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
         fields = '__all__'
