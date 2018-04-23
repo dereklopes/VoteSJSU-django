@@ -1,3 +1,4 @@
 djangorestframework
 Django
 psycopg2-binary
+oauth2client
