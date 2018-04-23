@@ -17,9 +17,11 @@ from django.contrib import admin
 from django.urls import path
 from VoteSJSU.post_view import PostView
 from VoteSJSU.vote_view import VoteView
+from VoteSJSU.comment_view import CommentView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('post/', PostView.as_view()),
     path('post/vote/', VoteView.as_view()),
+    path('post/comment/', CommentView.as_view()),
 ]
