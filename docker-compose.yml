@@ -1,0 +1,24 @@
+version: '3.4'
+services:
+  django:
+    build: .
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - ./src:/usr/src/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - postgres
+    container_name: VoteSJSU-django
+  postgres:
+    image: postgres:latest
+    volumes:
+      - db-data:/var/lib/mysql
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=123
+    container_name: VoteSJSU-postgres
+
+volumes:
+  db-data:
