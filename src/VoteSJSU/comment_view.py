@@ -23,7 +23,7 @@ class CommentView(APIView):
         if filter_post:
             queryset.union(Comment.objects.filter(post__exact=filter_post))
         if filter_content:
-            queryset.union(Comment.objects.filter(content__exact=filter_content))
+            queryset.union(Comment.objects.filter(content__contains=filter_content))
         if not queryset:
             return Comment.objects.all()
         return queryset
