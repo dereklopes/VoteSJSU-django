@@ -2,7 +2,7 @@ version: '3.2'
 services:
   django:
     build: .
-    command: bash -c "./manage.py makemigrations && ./manage.py migrate && ./manage.py runserver 0.0.0.0:8000"
+    command: bash -c "python manage.py makemigrations && python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
     volumes:
       - ./src:/usr/src/app
     ports:
