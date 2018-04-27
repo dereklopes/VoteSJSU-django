@@ -8,6 +8,7 @@ services:
 before_install:
 - docker-compose build --no-cache 
 - docker-compose up -d; sleep 10
+- docker-compose ps
 
 script:
 - docker exec -ti VoteSJSU-django python manage.py test 
