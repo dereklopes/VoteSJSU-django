@@ -35,12 +35,12 @@ class AccountView(APIView):
 
         if token == 'ACCOUNTTESTTOKEN':
             # this is a test, do not verify token
-            return HttpResponse(status=status.HTTP_200_OK)
+            return HttpResponse(status=status.HTTP_201_CREATED)
 
         if user_id and token:
             try:
                 idinfo = client.verify_id_token(token, user_id)
-                return JsonResponse(data=idinfo, status=status.HTTP_200_OK)
+                return JsonResponse(data=idinfo, status=status.HTTP_201_CREATED)
             except crypt.AppIdentityError:
                 return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
         return HttpResponse(status=status.HTTP_400_BAD_REQUEST)

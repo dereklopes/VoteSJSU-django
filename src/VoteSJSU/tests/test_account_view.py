@@ -18,7 +18,7 @@ class AccountTestCase(TestCase):
             {'email': self.email, 'name': self.name, 'token': self.token, 'userId': 'test'},
             format='json'
         )
-        self.assertEqual(post_response.status_code, status.HTTP_200_OK)
+        self.assertEqual(post_response.status_code, status.HTTP_201_CREATED)
 
         # check to see if the account was created
         try:
@@ -72,7 +72,7 @@ class AccountTestCase(TestCase):
             {'email': self.email, 'name': new_name, 'token': self.token, 'userId': 'test'},
             format='json'
         )
-        self.assertEqual(post_response.status_code, status.HTTP_200_OK)
+        self.assertEqual(post_response.status_code, status.HTTP_201_CREATED)
         get_response = client.get('/account/?email=' + self.email)
         response_json = json.JSONDecoder().decode(get_response.content.decode())[0]
         self.assertEqual(response_json['name'], new_name, 'Name was not changed correctly!')
