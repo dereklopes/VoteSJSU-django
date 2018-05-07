@@ -17,14 +17,14 @@ class PostView(APIView):
         if filter_id:
             return Post.objects.filter(post_id__exact=filter_id)
         # otherwise build a queryset with all matching posts
-        queryset = QuerySet(model=Post)
+        queryset = Post.objects.none()
         if filter_title:
-            queryset.union(Post.objects.filter(title__contains=filter_title))
+            queryset = queryset.union(Post.objects.filter(title__contains=filter_title))
         if filter_author:
-            queryset.union(Post.objects.filter(author__exact=filter_author))
+            queryset = queryset.union(Post.objects.filter(author__exact=filter_author))
         if filter_type:
-            queryset.union(Post.objects.filter(post_type__exact=filter_type))
-        if not queryset:
+            queryset = queryset.union(Post.objects.filter(post_type__exact=filter_type))
+        if not filter_id and not filter_title and not filter_author and not filter_type:
             return Post.objects.all()
         return queryset
 
