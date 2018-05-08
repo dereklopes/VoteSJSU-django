@@ -75,11 +75,13 @@ class VoteView(APIView):
             return -1
         # Update Post object
         if post.post_type == 'rating':
-            post.num_ratings = len(Vote.objects.filter(post_id__exact=post_id))
-            if post.num_ratings == 0:
-                post.rating = 0
-            else:
-                post.rating = float(post.rating) + choice / post.num_ratings
+            votes = Vote.objects.filter(post__exact=post_id)
+            total_score = num_ratings = 0
+            for vote in list(votes):
+                total_score += vote.choice
+                num_ratings += 1
+            post.rating = total_score / num_ratings
+            post.num_ratings = num_ratings
         elif post.post_type == 'poll':
             post.choice1_votes = len(Vote.objects.filter(post_id__exact=post_id, choice__exact=1))
             post.choice2_votes = len(Vote.objects.filter(post_id__exact=post_id, choice__exact=2))
